@@ -16,7 +16,7 @@ const CommentVoteData = require("../models/CommentVoteSchema")
 const { parse } = require("path");
 const { Console } = require("console");
 const FeedbackData = require("../models/feedbackSchema");
-const ReportData = require("../models/reportSchema");
+const ReportData = require("../models/ReportSchema");
 
 const CommentData = require("../models/commentSchema");
 const VoteData = require("../models/Vote");
