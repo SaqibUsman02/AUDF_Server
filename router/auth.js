@@ -457,7 +457,7 @@ router.get("/Question", Authenticate, async (req, res) => {
   res.send(userExist);
 });
 
-router.get("/FetchReport", Authenticate, async (req, res) => {
+router.get("/FetchReport",  async (req, res) => {
   // const userExist = await QueryData.find({ UserID: "tech54qi@gmail.com" }).sort({ _id: -1 });
   const userExist = await ReportData.find().sort({ _id: -1 });
   res.send(userExist);
