@@ -5,6 +5,6 @@
        { "src": "auth.js", "use": "@vercel/node" }
     ],
     "routes": [
-       { "src": "/(.*)", "dest": "/auth.js" }
+       { "src": "/(.*)", "dest": "/router/auth.js" }
     ]
  }
