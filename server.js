@@ -28,7 +28,7 @@ app.use(passport.session());
 
 app.use(
 	cors({
-		origin: "https://audf.vercel.app",
+    origin: ['https://audf.vercel.app', 'http://audf.vercel.app'],
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 	})
