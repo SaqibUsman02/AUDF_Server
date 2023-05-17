@@ -74,7 +74,7 @@ router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
     // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
 
-  res.send({ queryCount });
+ await res.send({ queryCount });
 });
 
 
@@ -87,7 +87,7 @@ router.get("/check", async (req, res) => {
 
 
 router.get("/queryCount", async (req, res) => {
-  QueryData.find((err,docs)=>{
+  await QueryData.find((err,docs)=>{
     if(docs){
       res.send({status:200,data:docs})
     }
@@ -100,7 +100,7 @@ router.get("/queryCount", async (req, res) => {
 
 
 router.get("/usersCount", async (req, res) => {
-  User.find((err,docs)=>{
+  await User.find((err,docs)=>{
     if(docs){
       res.send({status:200,data:docs})
     }
@@ -115,7 +115,7 @@ router.get("/usersList", async (req, res) => {
   try {
     // console.log("-------------------");
     const users = await User.find({}, {name: 1, Email: 1, id:1});
-      res.status(200).send(users);
+     await res.status(200).send(users);
 
     // console.log(users)
     // console.log('trying')
@@ -123,7 +123,7 @@ router.get("/usersList", async (req, res) => {
 
   } catch (error) { 
     console.error("Error fetching users list:", error);
-    res.status(500).send({status: 500, error: error});
+    await res.status(500).send({status: 500, error: error});
   }
 });
 
@@ -142,7 +142,7 @@ router.get("/contact", async (req, res) => {
 
 
 router.get("/queryCategory", async (req, res) => {
-  ReportData.find((err,docs)=>{
+ await ReportData.find((err,docs)=>{
     if(docs){
       res.send({status:200,data:docs})
 
@@ -297,12 +297,12 @@ router.post("/Uploads", async (req, res) => {
       const update = { Photo: postImage};
   
       await User.findOneAndUpdate(filter, update);
-      res.status(201).json({message: "Your Data Successfully Posted"});
+      await res.status(201).json({message: "Your Data Successfully Posted"});
       console.log("Your Data Successfully Posted");
     }
 
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    await res.status(409).json({ message: error.message });
   }
 });
 
@@ -317,9 +317,9 @@ router.post("/Upload", async (req, res) => {
 
     const commentData = new UserImage({ postImage, Title });
     await commentData.save();
-    res.status(201).json({ msg: "New image uploaded...!" });
+   await res.status(201).json({ msg: "New image uploaded...!" });
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    await res.status(409).json({ message: error.message });
   }
 });
 
@@ -481,7 +481,7 @@ router.post("/contact", async (req, res) => {
     }else{
       contactData = new Contact({ name,Email,Subject,Message });
       contactData.save();
-      res.status(201).json({ message: "Your Contact Successfully Posted" });
+      await res.status(201).json({ message: "Your Contact Successfully Posted" });
       console.log("Your Contact Successfully Posted");
     }
    
@@ -498,7 +498,7 @@ router.post("/comment", async (req, res) => {
   try {
     if ( !Photo || !ID || !Name || !PostID || !comment) {
       console.log("Missing Answer Data");
-      res.status(400).json({ error: "Please Filled the Field Properly" });
+      await res.status(400).json({ error: "Please Filled the Field Properly" });
     } else {
 
       let quer= await QueryData.findOne({ PostID: PostID });
@@ -508,7 +508,7 @@ router.post("/comment", async (req, res) => {
 
       await quer.save();
 
-      res.status(201).json({ message: "Comment Successfully" });
+      await res.status(201).json({ message: "Comment Successfully" });
     }
     }
   } catch (err) {
@@ -530,7 +530,7 @@ try{
     const update = { Password: this.New_Password, Confirm_Password: this.Confirm_Password};
     let userr =  await User.findOneAndUpdate(filter,update);
   
-    res.status(201).json({message: "Your Data Successfully Posted"});
+    await res.status(201).json({message: "Your Data Successfully Posted"});
     console.log("Your Data Successfully Posted");
 
   }
@@ -562,7 +562,7 @@ router.post("/change_pass", async(req,res) => {
         this.Confirm_Password= await bcrypt.hash(Confirm_Password,12);
         const update = { Password: this.New_Password, Confirm_Password: this.Confirm_Password};
         let userr =  await User.findOneAndUpdate(filter,update);
-        res.status(201).json({message: "Your Data Successfully Posted"});
+        await  res.status(201).json({message: "Your Data Successfully Posted"});
         console.log("Your Data Successfully Posted");
 
       }
@@ -591,7 +591,7 @@ router.post("/UpdateProfile",async(req,res) => {
     const update = { Phone: Phone ,Gender: Gender, Website: Website, Github: Github, Twitter: Twitter};
 
     await User.findOneAndUpdate(filter, update);
-    res.status(201).json({message: "Your Data Successfully Posted"});
+    await res.status(201).json({message: "Your Data Successfully Posted"});
     console.log("Your Data Successfully Posted");
   }
     
@@ -612,11 +612,11 @@ router.post("/report", async (req, res) => {
       ||   !Category 
        || !Report) {
       console.log("Missing Report Data");
-      res.status(400).json({ error: "Please Filled the Field Properly" });
+      await  res.status(400).json({ error: "Please Filled the Field Properly" });
     } else {
       reportData = new ReportData({ PostID,ID, Category, Report });
       reportData.save();
-      res.status(201).json({ message: "Your Report Successfully Posted" });
+      await  res.status(201).json({ message: "Your Report Successfully Posted" });
       console.log("Your Report Successfully Posted");
     }
   } catch (err) {
@@ -653,7 +653,7 @@ router.post("/feedback", async (req, res) => {
   try {
     if (!ID || !Category || !Feedback) {
       console.log("Missing Feedback Data");
-      res.status(400).json({ error: "Please fill the fields properly" });
+      await  res.status(400).json({ error: "Please fill the fields properly" });
     } else {
      
 
@@ -669,15 +669,15 @@ router.post("/feedback", async (req, res) => {
         console.log(Review);
         feedbackData = new FeedbackData({ ID, Category, Feedback, Review });
         feedbackData.save();
-        res.status(201).json({ message: "Your Feedback Successfully Posted" });
+        await   res.status(201).json({ message: "Your Feedback Successfully Posted" });
       } else {
         console.log("Error communicating with the AI server");
-        res.status(500).json({ error: "Error communicating with the AI server" });
+        await  res.status(500).json({ error: "Error communicating with the AI server" });
       }
     }
   } catch (err) {
     console.log("err");
-    res.status(500).json({ error: "Internal server error" });
+    await  res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -731,7 +731,7 @@ router.post("/Question", async (req, res) => {
       });
       await queryData.save();
 
-      res.status(201).json({ message: "Your Query Successfully Posted" });
+      await res.status(201).json({ message: "Your Query Successfully Posted" });
       console.log("Your Query Successfully Posted");
     }
   } catch (err) {
@@ -877,7 +877,7 @@ router.post("/QueryUpvote", async (req, res) => {
       const update = { Upvote: like };
   
       await QueryData.findOneAndUpdate(filter, update);
-      res.status(201).json({ message: "Your Query Successfully Posted" });
+      await res.status(201).json({ message: "Your Query Successfully Posted" });
       console.log("Your Query Successfully Posted");
     
   } catch (err) {
@@ -896,7 +896,7 @@ router.post("/QueryDevote", async (req, res) => {
       const update = { Devote: dislike };
       await QueryData.findOneAndUpdate(filter, update);
 
-      res.status(201).json({ message: "Your Query Successfully Posted" });
+      await res.status(201).json({ message: "Your Query Successfully Posted" });
       console.log("Your Query Successfully Posted");
     
   } catch (err) {
@@ -1017,10 +1017,10 @@ router.get("/users/:id/verify/:token", async (req, res) => {
 
     await User.findOneAndUpdate(filter, update);
 
-    res.status(200).send({ message: "Email Verified Successfully" });
+    await res.status(200).send({ message: "Email Verified Successfully" });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ message: "Internal Server Eror" });
+    await res.status(400).send({ message: "Internal Server Eror" });
   }
 });
 
@@ -1071,17 +1071,17 @@ router.post("/login", async (req, res) => {
           .send({ message: "An Email sent to your account please Verify" });
       } else {
         token = await userExist.generateAuthToken();
-        res.cookie("jwToken", token, {
+        await res.cookie("jwToken", token, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: true,
         });
 
-        res.cookie("Name", userExist.name, {
+        await  res.cookie("Name", userExist.name, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: false,
         });
     
-        res.cookie("Email", userExist.Email, {
+        await  res.cookie("Email", userExist.Email, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: false,
         });
@@ -1109,9 +1109,9 @@ router.post("/login", async (req, res) => {
 router.get("/logout", async (req, res) => {
   try{
     console.log("helloo to logout");
-    res.clearCookie("jwToken", { path: "/" });  
-    res.clearCookie("Name", { path: "/" });
-    res.clearCookie("Email", { path: "/" });
+    await  res.clearCookie("jwToken", { path: "/" });  
+    await res.clearCookie("Name", { path: "/" });
+    await res.clearCookie("Email", { path: "/" });
     return res.status(200).json({ message: "Logout Succeessfully" });
   }catch(e){
     console.log(e);
@@ -1142,31 +1142,31 @@ router.get("/login/success", async (req, res) => {
         await user.save();
 
         token = await user.generateAuthToken();
-        res.cookie("jwToken", token, {
+        await res.cookie("jwToken", token, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: true,
         });
     }else{
       console.log("8888888888888888888888888888888888888");
       token = await userExistance.generateAuthToken();
-      res.cookie("jwToken", token, {
+      await  res.cookie("jwToken", token, {
         expires: new Date(Date.now() + 25892000000),
         httpOnly: true,
       });
         }
 
 
-    res.cookie("Name", req.user.name.givenName, {
+        await res.cookie("Name", req.user.name.givenName, {
       expires: new Date(Date.now() + 25892000000),
       httpOnly: false,
     });
 
-    res.cookie("Email", req.user.emails[0].value, {
+    await res.cookie("Email", req.user.emails[0].value, {
       expires: new Date(Date.now() + 25892000000),
       httpOnly: false,
     });
 
-    res.redirect(200, "http://localhost:3001/dashboard/");
+    await  res.redirect(200, "https://audf.vercel.app/dashboard/");
 		// return res.status(200).json({
 		// 	error: false,
 		// 	message: "Successfully Logged In",
@@ -1178,9 +1178,9 @@ router.get("/login/success", async (req, res) => {
 	}
 });
 
-router.get("/login/failed", (req, res) => {
+router.get("/login/failed",async (req, res) => {
   console.log("+++++++++++++++++++");
-	res.status(401).json({
+	await res.status(401).json({
 		error: true,
 		message: "Log in failure",
 	});
