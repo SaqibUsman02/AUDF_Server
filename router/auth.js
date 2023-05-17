@@ -1078,12 +1078,12 @@ router.post("/login", async (req, res) => {
 
         await  res.cookie("Name", userExist.name, {
           expires: new Date(Date.now() + 25892000000),
-          httpOnly: false,
+          httpOnly: true,
         });
     
         await  res.cookie("Email", userExist.Email, {
           expires: new Date(Date.now() + 25892000000),
-          httpOnly: false,
+          httpOnly: true,
         });
   
         // console.log("" + userExist);
