@@ -331,7 +331,7 @@ router.get("/OwnQuestion", Authenticate, async (req, res) => {
     _id: -1,
   });
 
-  res.send(userData);
+  await res.send(userData);
 });
 
 
@@ -359,9 +359,9 @@ router.get("/getOtherProfileUser", Authenticate, async (req, res) => {
 
 
 
-router.get("/trendingQuery",async (req, res) => {
+router.get("/trendingQuery", async (req, res) => {
 
-  QueryData.find().sort({ Upvote: -1 }).limit(10)
+ await QueryData.find().sort({ Upvote: -1 }).limit(10)
   .then(queries => {
     res.send(queries);
 
@@ -377,7 +377,7 @@ router.get("/OtherUserProfile", Authenticate, async (req, res) => {
   const name = req.query.PostID;
 
   const userData = await QueryData.findOne({PostID: name });
-  res.send(userData.UserID);
+  await res.send(userData.UserID);
 });
 
 
@@ -386,7 +386,7 @@ router.get("/OwnQuestionn", Authenticate, async (req, res) => {
 
   const userData = await User.findOne({ Email: req.cookies["Email"]  });
 
-  res.send(userData);
+ await res.send(userData);
 });
 
 //***************** Fetching Comment ******************* */
@@ -406,7 +406,7 @@ router.get("/VoteData", Authenticate, async (req, res) => {
   const QueryVote = await VoteData.find({UserID: Email,PostID: PostID });
   
 
-  res.send(QueryVote);
+ await res.send(QueryVote);
 });
 
 router.get("/CommentVoteData", Authenticate, async (req, res) => {
@@ -419,7 +419,7 @@ router.get("/CommentVoteData", Authenticate, async (req, res) => {
 
   const userData = await CommentVoteData.find({UserID: Email,PostID: PostID,CommentID: CommentID });
   console.log("2222" + userData);
-  res.send(userData);
+  await res.send(userData);
 });
 
 
@@ -449,26 +449,26 @@ router.get("/OwnProfile_Pic", Authenticate, async (req, res) => {
 
 router.get("/OwnProfileDetails", Authenticate, async(req,res) =>{
   const userData = await User.findOne({Email: req.cookies["Email"]});
-  if(userData){ res.send(userData);}
+  if(userData){ await res.send(userData);}
 });
 
 router.get("/Question", Authenticate, async (req, res) => {
   const userExist = await QueryData.find().sort({ _id: -1 });
-  res.send(userExist);
+ await res.send(userExist);
 });
 
 router.get("/FetchReport",  async (req, res) => {
   // const userExist = await QueryData.find({ UserID: "tech54qi@gmail.com" }).sort({ _id: -1 });
   const userExist = await ReportData.find().sort({ _id: -1 });
-  res.send(userExist);
+  await res.send(userExist);
 });
 
 
 
 
 
-router.get("/getData", Authenticate, (req, res) => {
-  res.send(req.rootUser);
+router.get("/getData", Authenticate,async (req, res) => {
+ await res.send(req.rootUser);
 });
 
 let contactData;
