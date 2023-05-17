@@ -28,10 +28,9 @@ app.use(passport.session());
 
 app.use(
 	cors({
-    "Access-Control-Allow-Origin": 'https://audf.vercel.app',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Credentials': 'true'
+    origin: "https://audf.vercel.app",
+		methods: "GET,POST,PUT,DELETE",
+		credentials: true,
 
 	})
 );
