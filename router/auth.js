@@ -74,7 +74,7 @@ router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
     // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
 
- await res.send({ queryCount });
+ await res.status(200).send({ queryCount });
 });
 
 
@@ -331,7 +331,7 @@ router.get("/OwnQuestion", Authenticate, async (req, res) => {
     _id: -1,
   });
 
-  await res.send(userData);
+  await res.status(200).send(userData);
 });
 
 
@@ -363,7 +363,7 @@ router.get("/trendingQuery", async (req, res) => {
 
  await QueryData.find().sort({ Upvote: -1 }).limit(10)
   .then(queries => {
-    res.send(queries);
+    res.status(200).send(queries);
 
     // const queryTexts = queries.map(query => query.QueryTitle);
     // console.log(queryTexts);
@@ -386,7 +386,7 @@ router.get("/OwnQuestionn", Authenticate, async (req, res) => {
 
   const userData = await User.findOne({ Email: req.cookies["Email"]  });
 
- await res.send(userData);
+ await res.status(200).send(userData);
 });
 
 //***************** Fetching Comment ******************* */
@@ -395,7 +395,7 @@ router.get("/getAllComment", Authenticate, async (req, res) => {
   const name = req.query.PostID;
 
   const userData = await QueryData.findOne({PostID: name });
-  await res.send(userData.Comment);
+  await res.status(200).send(userData.Comment);
 });
 
 
@@ -406,7 +406,7 @@ router.get("/VoteData", Authenticate, async (req, res) => {
   const QueryVote = await VoteData.find({UserID: Email,PostID: PostID });
   
 
- await res.send(QueryVote);
+ await res.status(200).send(QueryVote);
 });
 
 router.get("/CommentVoteData", Authenticate, async (req, res) => {
@@ -419,7 +419,7 @@ router.get("/CommentVoteData", Authenticate, async (req, res) => {
 
   const userData = await CommentVoteData.find({UserID: Email,PostID: PostID,CommentID: CommentID });
   console.log("2222" + userData);
-  await res.send(userData);
+  await res.status(200).send(userData);
 });
 
 
@@ -444,23 +444,23 @@ router.get("/OwnPhoto", Authenticate, async (req, res) => {
 //---------------- User ki apni Profile Pic ----------------
 router.get("/OwnProfile_Pic", Authenticate, async (req, res) => {
   const userData = await User.findOne({Email: req.cookies["Email"] });
-  await res.send(userData);
+  return res.status(200).send(userData);
 });
 
 router.get("/OwnProfileDetails", Authenticate, async(req,res) =>{
   const userData = await User.findOne({Email: req.cookies["Email"]});
-  if(userData){ await res.send(userData);}
+  if(userData){ await res.status(200).send(userData);}
 });
 
 router.get("/Question", Authenticate, async (req, res) => {
   const userExist = await QueryData.find().sort({ _id: -1 });
- await res.send(userExist);
+ await res.status(200).send(userExist);
 });
 
 router.get("/FetchReport",  async (req, res) => {
   // const userExist = await QueryData.find({ UserID: "tech54qi@gmail.com" }).sort({ _id: -1 });
   const userExist = await ReportData.find().sort({ _id: -1 });
-  await res.send(userExist);
+  await res.status(200).send(userExist);
 });
 
 
@@ -468,7 +468,7 @@ router.get("/FetchReport",  async (req, res) => {
 
 
 router.get("/getData", Authenticate,async (req, res) => {
- await res.send(req.rootUser);
+ await res.status(200).send(req.rootUser);
 });
 
 let contactData;
