@@ -442,9 +442,9 @@ router.get("/OwnPhoto", Authenticate, async (req, res) => {
 
 
 //---------------- User ki apni Profile Pic ----------------
-router.get("https://audf-server.vercel.app/OwnProfile_Pic", Authenticate, async (req, res) => {
+router.get("/OwnProfile_Pic", Authenticate, async (req, res) => {
   const userData = await User.findOne({Email: req.cookies["Email"] });
-  res.send(userData);
+  await res.send(userData);
 });
 
 router.get("/OwnProfileDetails", Authenticate, async(req,res) =>{
