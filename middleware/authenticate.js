@@ -23,7 +23,7 @@ const Authenticate = async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.status(401).send("Unauthorized: No Token Provided");
+   await res.status(401).send("Unauthorized: No Token Provided");
     console.log(err);
   }
 };
