@@ -132,11 +132,11 @@ router.get("/contact", async (req, res) => {
   try {
     const contact = await Contact.find().sort({_id: -1,});;
     console.log(contact);
-      res.status(200).send(contact);
+      await res.status(200).send(contact);
 
   } catch (error) { 
     console.error("Error fetching Contact list:", error);
-    res.status(400).send({status: 400, error: error});
+    await res.status(400).send({status: 400, error: error});
   }
 });
 
