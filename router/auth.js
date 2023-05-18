@@ -406,7 +406,7 @@ router.get("/VoteData",  async (req, res) => {
   const QueryVote = await VoteData.find({UserID: Email,PostID: PostID });
   
 
- await res.status(200).send(QueryVote);
+  res.status(200).json(QueryVote);
 });
 
 router.get("/CommentVoteData",  async (req, res) => {
