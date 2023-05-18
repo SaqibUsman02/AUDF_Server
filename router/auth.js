@@ -1089,10 +1089,12 @@ router.post("/login", async (req, res) => {
         // console.log("" + userExist);
         console.log("successfully login");
 
-        return res.status(200).json(
-          // { message: "User Signin Successfully" }
+        return res.status(200).json({
+          token: token,
+          name: userExist.name,
+          email: userExist.Email,
           userExist
-        );
+        });
       }
 
       
