@@ -109,15 +109,15 @@ router.get("/queryCategory", async (req, res) => {
 ///////////////////////////////////////////////////////////  Get Feedback Data API //////////////////////////////////////////////////
 
 router.get("/findfeedback", async (req, res) => {
- await FeedbackData.find((err, docs) => {
-    if (docs) {
-      res.json({ status: 200, data: docs });
-      // console.log("Mydata--------------", docs)
-    } else {
-      console.log("err ========", err);
-      res.json({ status: 500, error: err });
-    }
-  });
+  try {
+    const contact = await FeedbackData.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 /////////////////////////////////////////////////////////  Get queries //////////////////////////////////////////////////
