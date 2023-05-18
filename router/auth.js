@@ -324,7 +324,7 @@ router.post("/Upload", async (req, res) => {
 });
 
 let userExist = "";
-router.get("/OwnQuestion", Authenticate, async (req, res) => {
+router.get("/OwnQuestion", async (req, res) => {
   console.log("helo Own Question page");
 
   const userData = await QueryData.find({ UserID: req.cookies["Email"]}).sort({
@@ -335,7 +335,7 @@ router.get("/OwnQuestion", Authenticate, async (req, res) => {
 });
 
 
-router.get("/getOtherProfileQuery", Authenticate, async (req, res) => {
+router.get("/getOtherProfileQuery",  async (req, res) => {
 
   const userData = await QueryData.find({ UserID: req.query.UserID}).sort({
     _id: -1,
@@ -345,7 +345,7 @@ router.get("/getOtherProfileQuery", Authenticate, async (req, res) => {
   return res.status(200).send(userData);
 });
 
-router.get("/getOtherProfileUser", Authenticate, async (req, res) => {
+router.get("/getOtherProfileUser",  async (req, res) => {
 
   const userData = await User.findOne({ Email: req.query.UserID });
    
@@ -372,7 +372,7 @@ router.get("/trendingQuery", async (req, res) => {
 
 });
 
-router.get("/OtherUserProfile", Authenticate, async (req, res) => {
+router.get("/OtherUserProfile",  async (req, res) => {
 
   const name = req.query.PostID;
 
@@ -381,7 +381,7 @@ router.get("/OtherUserProfile", Authenticate, async (req, res) => {
 });
 
 
-router.get("/OwnQuestionn", Authenticate, async (req, res) => {
+router.get("/OwnQuestionn",  async (req, res) => {
   console.log("helo Own Question2 page");
 
   const userData = await User.findOne({ Email: req.cookies["Email"]  });
@@ -390,7 +390,7 @@ router.get("/OwnQuestionn", Authenticate, async (req, res) => {
 });
 
 //***************** Fetching Comment ******************* */
-router.get("/getAllComment", Authenticate, async (req, res) => {
+router.get("/getAllComment",  async (req, res) => {
 
   const name = req.query.PostID;
 
@@ -399,7 +399,7 @@ router.get("/getAllComment", Authenticate, async (req, res) => {
 });
 
 
-router.get("/VoteData", Authenticate, async (req, res) => {
+router.get("/VoteData",  async (req, res) => {
 
   const Email = req.query.Email;
     const PostID = req.query.PostID;
@@ -409,7 +409,7 @@ router.get("/VoteData", Authenticate, async (req, res) => {
  await res.status(200).send(QueryVote);
 });
 
-router.get("/CommentVoteData", Authenticate, async (req, res) => {
+router.get("/CommentVoteData",  async (req, res) => {
 
   const Email = req.query.Email;
     const PostID = req.query.PostID;
@@ -425,7 +425,7 @@ router.get("/CommentVoteData", Authenticate, async (req, res) => {
 
 // feed wale bandon ki profile pic
 
-router.get("/OwnPhoto", Authenticate, async (req, res) => {
+router.get("/OwnPhoto",  async (req, res) => {
   const Email = req.query.Email;
   const OtherUserData = await User.findOne({Email: Email });
   const LoginUserData = await User.findOne({Email: req.cookies["Email"] });
@@ -442,17 +442,17 @@ router.get("/OwnPhoto", Authenticate, async (req, res) => {
 
 
 //---------------- User ki apni Profile Pic ----------------
-router.get("/OwnProfile_Pic", Authenticate, async (req, res) => {
+router.get("/OwnProfile_Pic",  async (req, res) => {
   const userData = await User.findOne({Email: req.cookies["Email"] });
   return res.status(200).send(userData);
 });
 
-router.get("/OwnProfileDetails", Authenticate, async(req,res) =>{
+router.get("/OwnProfileDetails",  async(req,res) =>{
   const userData = await User.findOne({Email: req.cookies["Email"]});
   if(userData){ await res.status(200).send(userData);}
 });
 
-router.get("/Question", Authenticate, async (req, res) => {
+router.get("/Question", async (req, res) => {
   const userExist = await QueryData.find().sort({ _id: -1 });
  await res.status(200).send(userExist);
 });
@@ -467,7 +467,7 @@ router.get("/FetchReport",  async (req, res) => {
 
 
 
-router.get("/getData", Authenticate,async (req, res) => {
+router.get("/getData", async (req, res) => {
  await res.status(200).send(req.rootUser);
 });
 
@@ -1093,7 +1093,7 @@ router.post("/login", async (req, res) => {
           token: token,
           name: userExist.name,
           email: userExist.Email,
-          userExist
+          userExist 
         });
       }
 
