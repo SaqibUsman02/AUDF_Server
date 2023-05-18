@@ -42,12 +42,12 @@ const router = express.Router();
 
 
 router.get("/usersCount", async (req, res) => {
-  User.find((err, docs) => {
+  await User.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+       res.json({ status: 200, data: docs });
 
     } else {
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -57,11 +57,11 @@ router.get("/usersCount", async (req, res) => {
 
 
 router.get("/queryCount", async (req, res) => {
-  QueryData.find((err, docs) => {
+ await QueryData.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+      res.json({ status: 200, data: docs });
     } else {
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -70,11 +70,11 @@ router.get("/queryCount", async (req, res) => {
 ///////////////////////// show user query to admin API //////////////////////
 
 router.get("/showquery", async (req, res) => {
-  QueryData.find((err, docs) => {
+ await QueryData.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+      res.json({ status: 200, data: docs });
     } else {
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -84,22 +84,22 @@ router.get("/showquery", async (req, res) => {
 router.get("/usersList", async (req, res) => {
   try {
     const users = await User.find({}, { name: 1, Email: 1, id: 1, Category:1, isEnabled:1, Photo:1});
-    res.send(users)
+    await res.status(200).json(users)
   } catch (error) {
     console.error("Error fetching users list:", error);
-    res.status(500).send({ status: 500, error: error });
+    await res.status(500).json({ status: 500, error: error });
   }
 });
 
 ///////////////////////////////////////////////////////////  Report Category API //////////////////////////////////////////////////
 
 router.get("/queryCategory", async (req, res) => {
-  ReportData.find((err, docs) => {
+ await ReportData.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+      res.json({ status: 200, data: docs });
     } else {
       console.log("err ========", err);
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -107,13 +107,13 @@ router.get("/queryCategory", async (req, res) => {
 ///////////////////////////////////////////////////////////  Get Feedback Data API //////////////////////////////////////////////////
 
 router.get("/findfeedback", async (req, res) => {
-  FeedbackData.find((err, docs) => {
+ await FeedbackData.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+      res.json({ status: 200, data: docs });
       // console.log("Mydata--------------", docs)
     } else {
       console.log("err ========", err);
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -121,13 +121,13 @@ router.get("/findfeedback", async (req, res) => {
 /////////////////////////////////////////////////////////  Get queries //////////////////////////////////////////////////
 
 router.get("/findreport", async (req, res) => {
-  ReportData.find((err, docs) => {
+  await ReportData.find((err, docs) => {
     if (docs) {
-      res.send({ status: 200, data: docs });
+      res.json({ status: 200, data: docs });
       // console.log('docs ========', docs)
     } else {
       console.log("err ========", err);
-      res.send({ status: 500, error: err });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -136,7 +136,7 @@ router.get("/findreport", async (req, res) => {
 
 router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
-  res.send({ queryCount });
+ await res.json({ queryCount });
 });
 
 //////////////////////////////////Contact Admin//////////////////////////
@@ -161,11 +161,11 @@ router.get("/contactadmin", async (req, res) => {
   try {
     const contact = await Contact.find().sort({_id: -1,});;
     // console.log(contact);
-      res.status(200).send(contact);
+      await res.status(200).json(contact);
 
   } catch (error) { 
     console.error("Error fetching Contact list:", error);
-    res.status(400).send({status: 400, error: error});
+    await res.status(400).json({status: 400, error: error});
   }
 });
 ///////////////////////////////// Get users with date ////////////////////////////
@@ -177,10 +177,10 @@ router.get("/finduserwithdate", async (req, res) => {
       const formattedDate = formatDate(user.Date); // Format the date using a helper function
       return { id: user.id, Date: formattedDate, Category: user.Category };
     });
-    res.send(formattedUsers);
+    await res.json(formattedUsers);
   } catch (error) {
     console.error("Error fetching find user with date:", error);
-    res.status(500).send({ status: 500, error: error });
+   await res.status(500).json({ status: 500, error: error });
   }
 });
 
@@ -197,14 +197,14 @@ function formatDate(date) {
 // Assuming you have an Express app initialized and running
 
 // PUT /users/:email
-router.put(`/updateUser`, (req, res) => {
+router.put(`/updateUser`,async (req, res) => {
 
 
 
   const email = req.query.email;
   const body = req.body;
   
-  User.findOneAndUpdate({ Email: email }, body, (err, user) => {
+  await  User.findOneAndUpdate({ Email: email }, body, (err, user) => {
     if (err) {
       console.error('Error finding user:', err);
       return res.status(500).json({ error: 'Internal server error' });
@@ -255,7 +255,7 @@ router.delete('/deletequery', async (req, res) => {
     return res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });  
+   await res.status(500).json({ error: 'Something went wrong' });  
   }
 });
 
@@ -364,7 +364,7 @@ router.get("/contact", async (req, res) => {
 
   } catch (error) { 
     console.error("Error fetching Contact list:", error);
-    await res.status(400).send({status: 400, error: error});
+    await res.status(400).json({status: 400, error: error});
   }
 });
 
@@ -605,7 +605,7 @@ router.get("/OtherUserProfile",  async (req, res) => {
   const name = req.query.PostID;
 
   const userData = await QueryData.findOne({PostID: name });
-  await res.send(userData.UserID);
+  await res.json(userData.UserID);
 });
 
 
