@@ -74,7 +74,7 @@ router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
     // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
 
- await res.status(200).send({ queryCount });
+ await res.status(200).json({ queryCount });
 });
 
 
@@ -115,7 +115,7 @@ router.get("/usersList", async (req, res) => {
   try {
     // console.log("-------------------");
     const users = await User.find({}, {name: 1, Email: 1, id:1});
-     await res.status(200).send(users);
+     await res.status(200).json(users);
 
     // console.log(users)
     // console.log('trying')
@@ -132,7 +132,7 @@ router.get("/contact", async (req, res) => {
   try {
     const contact = await Contact.find().sort({_id: -1,});;
     console.log(contact);
-      await res.status(200).send(contact);
+      await res.status(200).json(contact);
 
   } catch (error) { 
     console.error("Error fetching Contact list:", error);
@@ -331,7 +331,7 @@ router.get("/OwnQuestion", async (req, res) => {
     _id: -1,
   });
 
-  await res.status(200).send(userData);
+  await res.status(200).json(userData);
 });
 
 
@@ -342,7 +342,7 @@ router.get("/getOtherProfileQuery",  async (req, res) => {
   });
   console.log(userData);
 
-  return res.status(200).send(userData);
+  return res.status(200).json(userData);
 });
 
 router.get("/getOtherProfileUser",  async (req, res) => {
@@ -351,7 +351,7 @@ router.get("/getOtherProfileUser",  async (req, res) => {
    
   console.log(userData);
 
-  return res.status(200).send(userData);
+  return res.status(200).json(userData);
 });
 
 
@@ -363,7 +363,7 @@ router.get("/trendingQuery", async (req, res) => {
 
  await QueryData.find().sort({ Upvote: -1 }).limit(10)
   .then(queries => {
-    res.status(200).send(queries);
+    res.status(200).json(queries);
 
     // const queryTexts = queries.map(query => query.QueryTitle);
     // console.log(queryTexts);
@@ -386,7 +386,7 @@ router.get("/OwnQuestionn",  async (req, res) => {
 
   const userData = await User.findOne({ Email: req.query.Email });
 
- await res.status(200).send(userData);
+ await res.status(200).json(userData);
 });
 
 //***************** Fetching Comment ******************* */
@@ -395,7 +395,7 @@ router.get("/getAllComment",  async (req, res) => {
   const name = req.query.PostID;
 
   const userData = await QueryData.findOne({PostID: name });
-  await res.status(200).send(userData.Comment);
+  await res.status(200).json(userData.Comment);
 });
 
 
@@ -419,7 +419,7 @@ router.get("/CommentVoteData",  async (req, res) => {
 
   const userData = await CommentVoteData.find({UserID: Email,PostID: PostID,CommentID: CommentID });
   console.log("2222" + userData);
-  await res.status(200).send(userData);
+  await res.status(200).json(userData);
 });
 
 
@@ -438,7 +438,7 @@ router.get("/OwnPhoto",  async (req, res) => {
 
   // console.log(responseData);
 
-  return res.status(200).send(responseData);
+  return res.status(200).json(responseData);
 });
 
 
@@ -447,23 +447,23 @@ router.get("/OwnProfile_Pic",  async (req, res) => {
 
   console.log("@!321321" + req.query.Email)
   const userData = await User.findOne({Email: req.query.Email });
-  return res.status(200).send(userData);
+  return res.status(200).json(userData);
 });
 
 router.get("/OwnProfileDetails",  async(req,res) =>{
   const userData = await User.findOne({Email: req.query.Email});
-  if(userData){ await res.status(200).send(userData);}
+  if(userData){ await res.status(200).json(userData);}
 });
 
 router.get("/Question", async (req, res) => {
   const userExist = await QueryData.find().sort({ _id: -1 });
- await res.status(200).send(userExist);
+ await res.status(200).json(userExist);
 });
 
 router.get("/FetchReport",  async (req, res) => {
   // const userExist = await QueryData.find({ UserID: "tech54qi@gmail.com" }).sort({ _id: -1 });
   const userExist = await ReportData.find().sort({ _id: -1 });
-  await res.status(200).send(userExist);
+  await res.status(200).json(userExist);
 });
 
 
@@ -471,7 +471,7 @@ router.get("/FetchReport",  async (req, res) => {
 
 
 router.get("/getData", async (req, res) => {
- await res.status(200).send(req.rootUser);
+ await res.status(200).json(req.rootUser);
 });
 
 let contactData;
@@ -1020,7 +1020,7 @@ router.get("/users/:id/verify/:token", async (req, res) => {
 
     await User.findOneAndUpdate(filter, update);
 
-    await res.status(200).send({ message: "Email Verified Successfully" });
+    await res.status(200).json({ message: "Email Verified Successfully" });
   } catch (error) {
     console.log(error);
     await res.status(400).send({ message: "Internal Server Eror" });
@@ -1047,7 +1047,7 @@ router.post("/login", async (req, res) => {
 
     if(Email === "admin@austd.com" && Password === "adminpass"){
       console.log("88888");
-      return res.status(200).send({message : 'Admin'})
+      return res.status(200).json({message : 'Admin'})
 
     }
 
