@@ -44,9 +44,12 @@ const router = express.Router();
 router.get("/usersCount", async (req, res) => {
   await User.find({}, (err, docs) => {
     if (err) {
-      res.send({ status: 500, error: err });
+      console.log("aerrrr: " + err);
+
+      return res.send({ status: 500, error: err });
     } else {
-      res.send({ status: 200, data: docs });
+      console.log("asdsadsa" +  docs)
+     return  res.send({ status: 200, data: docs });
     }
   });
 });
