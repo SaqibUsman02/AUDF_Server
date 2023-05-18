@@ -426,6 +426,7 @@ router.get("/CommentVoteData",  async (req, res) => {
 // feed wale bandon ki profile pic
 
 router.get("/OwnPhoto",  async (req, res) => {
+  console.log("2222" + req.query.Email);
   const Email = req.query.Email;
   const OtherUserData = await User.findOne({Email: Email });
   const LoginUserData = await User.findOne({Email: req.query.Email });
