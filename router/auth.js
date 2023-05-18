@@ -416,7 +416,7 @@ router.get("/CommentVoteData",  async (req, res) => {
   const Email = req.query.Email;
     const PostID = req.query.PostID;
     const CommentID = req.query.CommentID;
-    console.log(Email +  PostID + CommentID);
+    console.log("asdasdA" + Email +  PostID + CommentID);
 
 
   const userData = await CommentVoteData.find({UserID: Email,PostID: PostID,CommentID: CommentID });
