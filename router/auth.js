@@ -444,7 +444,7 @@ router.get("/OwnPhoto",  async (req, res) => {
 //---------------- User ki apni Profile Pic ----------------
 router.get("/OwnProfile_Pic",  async (req, res) => {
 
-  console.log(req.query.Email)
+  console.log("@!321321" + req.query.Email)
   const userData = await User.findOne({Email: req.query.Email });
   return res.status(200).send(userData);
 });
