@@ -404,6 +404,8 @@ router.get("/VoteData",  async (req, res) => {
   const Email = req.query.Email;
     const PostID = req.query.PostID;
   const QueryVote = await VoteData.find({UserID: Email,PostID: PostID });
+  console.log("rrrrrrrrrr" + QueryVote);
+
   
 
   res.status(200).json(QueryVote);
