@@ -32,6 +32,234 @@ const router = express.Router();
 
 //##################### Admin ###############################
 
+
+
+//##################### Admin ###############################
+
+
+
+// //////////////////////////////total user find API
+
+
+router.get("/usersCount", async (req, res) => {
+  User.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+
+    } else {
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+
+// //////////////////////////////total query find API
+
+
+router.get("/queryCount", async (req, res) => {
+  QueryData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+
+///////////////////////// show user query to admin API //////////////////////
+
+router.get("/showquery", async (req, res) => {
+  QueryData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+///////////////////////////////////////////////////////////  usersList API //////////////////////////////////////////////////
+
+router.get("/usersList", async (req, res) => {
+  try {
+    const users = await User.find({}, { name: 1, Email: 1, id: 1, Category:1, isEnabled:1, Photo:1});
+    res.send(users)
+  } catch (error) {
+    console.error("Error fetching users list:", error);
+    res.status(500).send({ status: 500, error: error });
+  }
+});
+
+///////////////////////////////////////////////////////////  Report Category API //////////////////////////////////////////////////
+
+router.get("/queryCategory", async (req, res) => {
+  ReportData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+///////////////////////////////////////////////////////////  Get Feedback Data API //////////////////////////////////////////////////
+
+router.get("/findfeedback", async (req, res) => {
+  FeedbackData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+      // console.log("Mydata--------------", docs)
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+/////////////////////////////////////////////////////////  Get queries //////////////////////////////////////////////////
+
+router.get("/findreport", async (req, res) => {
+  ReportData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+      // console.log('docs ========', docs)
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+
+
+router.get("/queriesCount", async (req, res) => {
+  const queryCount = QueryData.countDocuments;
+  res.send({ queryCount });
+});
+
+//////////////////////////////////Contact Admin//////////////////////////
+
+// router.get("/contactadmin", async (req, res) => {
+//   try {
+//     const users = await Contact.find({}.sort({_id: -1,}));
+//     // const formattedUsers = users.map(user => {
+//     //   const formattedDate = formatDate(user.Date); // Format the date using a helper function
+//     //   return {  name: Contact.name, Date: formattedDate, Email: Contact.Email, Subject: Contact.Subject, Message: Contact.Message };
+//     // });
+
+//     console.log("zzzzzz", users  )
+//     res.status(200).send(users);
+//   } catch (error) {
+//     console.error("Error fetching users who contacted the admin:", error);
+//     res.status(500).send({ status: 500, error: error });
+//   }
+// });
+
+router.get("/contactadmin", async (req, res) => {
+  try {
+    const contact = await Contact.find().sort({_id: -1,});;
+    // console.log(contact);
+      res.status(200).send(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Contact list:", error);
+    res.status(400).send({status: 400, error: error});
+  }
+});
+///////////////////////////////// Get users with date ////////////////////////////
+
+router.get("/finduserwithdate", async (req, res) => {
+  try {
+    const users = await User.find({}, { Date: 1, Category:1, Email:1, id: 1 });
+    const formattedUsers = users.map(user => {
+      const formattedDate = formatDate(user.Date); // Format the date using a helper function
+      return { id: user.id, Date: formattedDate, Category: user.Category };
+    });
+    res.send(formattedUsers);
+  } catch (error) {
+    console.error("Error fetching find user with date:", error);
+    res.status(500).send({ status: 500, error: error });
+  }
+});
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  return year + "-" + month + "-" + day;
+}
+
+
+//////////////////////////Update user status ////////////////////////
+
+// Assuming you have an Express app initialized and running
+
+// PUT /users/:email
+router.put(`/updateUser`, (req, res) => {
+
+
+
+  const email = req.query.email;
+  const body = req.body;
+  
+  User.findOneAndUpdate({ Email: email }, body, (err, user) => {
+    if (err) {
+      console.error('Error finding user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update the user's isEnabled property
+    user.isEnabled = !user.isEnabled;
+
+    // Save the updated user
+    user.save((err) => {
+      if (err) {
+        console.error('Error updating user:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      // Return the updated user
+      res.status(200).json(user);
+    });
+  });
+});
+
+
+//////////////// delete document from MO DB ///////////////
+
+
+router.delete('/deletequery', async (req, res) => {
+
+  try {
+
+    const postID = req.query.postID;
+
+        
+    console.log("muuuuuuuuu", postID)
+
+    // Find the post by postID
+    const queryData = await QueryData.findOne({ PostID: postID });
+
+    if (!queryData) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Delete the post from the database
+    await queryData.remove();
+    return res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });  
+  }
+});
+
+
 // total user find API
 
 // router.get("/usersCount", async (req, res) => {
@@ -70,12 +298,12 @@ const router = express.Router();
 // });
 
 
-router.get("/queriesCount", async (req, res) => {
-  const queryCount = QueryData.countDocuments;
-    // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
+// router.get("/queriesCount", async (req, res) => {
+//   const queryCount = QueryData.countDocuments;
+//     // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
 
- await res.status(200).json({ queryCount });
-});
+//  await res.status(200).json({ queryCount });
+// });
 
 
 
@@ -86,46 +314,46 @@ router.get("/check", async (req, res) => {
 
 
 
-router.get("/queryCount", async (req, res) => {
-  await QueryData.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
-    }
-    else{
-      res.send({status:500, error:err})
-    }
-  })
+// router.get("/queryCount", async (req, res) => {
+//   await QueryData.find((err,docs)=>{
+//     if(docs){
+//       res.send({status:200,data:docs})
+//     }
+//     else{
+//       res.send({status:500, error:err})
+//     }
+//   })
  
-});
+// });
 
 
-router.get("/usersCount", async (req, res) => {
-  await User.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
-    }
-    else{
-      res.send({status:500, error:err})
-    }
-  })
+// router.get("/usersCount", async (req, res) => {
+//   await User.find((err,docs)=>{
+//     if(docs){
+//       res.send({status:200,data:docs})
+//     }
+//     else{
+//       res.send({status:500, error:err})
+//     }
+//   })
  
-});
+// });
 
-router.get("/usersList", async (req, res) => {
-  try {
-    // console.log("-------------------");
-    const users = await User.find({}, {name: 1, Email: 1, id:1});
-     await res.status(200).json(users);
+// router.get("/usersList", async (req, res) => {
+//   try {
+//     // console.log("-------------------");
+//     const users = await User.find({}, {name: 1, Email: 1, id:1});
+//      await res.status(200).json(users);
 
-    // console.log(users)
-    // console.log('trying')
+//     // console.log(users)
+//     // console.log('trying')
 
 
-  } catch (error) { 
-    console.error("Error fetching users list:", error);
-    await res.status(500).send({status: 500, error: error});
-  }
-});
+//   } catch (error) { 
+//     console.error("Error fetching users list:", error);
+//     await res.status(500).send({status: 500, error: error});
+//   }
+// });
 
 
 router.get("/contact", async (req, res) => {
@@ -141,20 +369,20 @@ router.get("/contact", async (req, res) => {
 });
 
 
-router.get("/queryCategory", async (req, res) => {
- await ReportData.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
+// router.get("/queryCategory", async (req, res) => {
+//  await ReportData.find((err,docs)=>{
+//     if(docs){
+//       res.send({status:200,data:docs})
 
 
-    }
-    else{
-      console.log('err ========', err)
-      res.send({status:500, error:err})
-    }
-  })
+//     }
+//     else{
+//       console.log('err ========', err)
+//       res.send({status:500, error:err})
+//     }
+//   })
  
-});
+// });
 
 
 //######################  Client #########################
