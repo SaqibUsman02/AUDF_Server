@@ -394,8 +394,11 @@ router.get("/getAllComment",  async (req, res) => {
 
   const name = req.query.PostID;
 
-  const userData = await QueryData.findOne({PostID: name });
-  await res.status(200).json(userData.Comment);
+  const userData = await QueryData.findOne({ PostID: name });
+  const sortedComments = userData.Comment.sort((a, b) => b.Upvote - a.Upvote);
+
+  console.log(sortedComments);
+  await res.status(200).json(sortedComments);
 });
 
 
