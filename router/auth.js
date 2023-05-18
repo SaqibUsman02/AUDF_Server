@@ -327,7 +327,7 @@ let userExist = "";
 router.get("/OwnQuestion", async (req, res) => {
   console.log("helo Own Question page");
 
-  const userData = await QueryData.find({ UserID: req.cookies["Email"]}).sort({
+  const userData = await QueryData.find({ UserID: req.query.Email}).sort({
     _id: -1,
   });
 
