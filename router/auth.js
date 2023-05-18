@@ -443,7 +443,7 @@ router.get("/OwnPhoto",  async (req, res) => {
 
 //---------------- User ki apni Profile Pic ----------------
 router.get("/OwnProfile_Pic",  async (req, res) => {
-  const userData = await User.findOne({Email: req.cookies["Email"] });
+  const userData = await User.findOne({Email: req.query.Email });
   return res.status(200).send(userData);
 });
 
