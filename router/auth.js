@@ -384,7 +384,7 @@ router.get("/OtherUserProfile",  async (req, res) => {
 router.get("/OwnQuestionn",  async (req, res) => {
   console.log("helo Own Question2 page");
 
-  const userData = await User.findOne({ Email: req.cookies["Email"]  });
+  const userData = await User.findOne({ Email: req.query.Email });
 
  await res.status(200).send(userData);
 });
@@ -428,7 +428,7 @@ router.get("/CommentVoteData",  async (req, res) => {
 router.get("/OwnPhoto",  async (req, res) => {
   const Email = req.query.Email;
   const OtherUserData = await User.findOne({Email: Email });
-  const LoginUserData = await User.findOne({Email: req.cookies["Email"] });
+  const LoginUserData = await User.findOne({Email: req.query.Email });
 
   const responseData = {
     LoginUserData: LoginUserData,
@@ -450,7 +450,7 @@ router.get("/OwnProfile_Pic",  async (req, res) => {
 });
 
 router.get("/OwnProfileDetails",  async(req,res) =>{
-  const userData = await User.findOne({Email: req.cookies["Email"]});
+  const userData = await User.findOne({Email: req.query.Email});
   if(userData){ await res.status(200).send(userData);}
 });
 
