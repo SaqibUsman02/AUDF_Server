@@ -42,16 +42,15 @@ const router = express.Router();
 
 
 router.get("/usersCount", async (req, res) => {
-  await User.find({}, (err, docs) => {
-    if (err) {
-      console.log("aerrrr: " + err);
+  try {
+    const contact = await User.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
 
-      return res.send({ status: 500, error: err });
-    } else {
-      console.log("asdsadsa" +  docs)
-     return  res.send({ status: 200, data: docs });
-    }
-  });
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 
@@ -59,26 +58,30 @@ router.get("/usersCount", async (req, res) => {
 
 
 router.get("/queryCount", async (req, res) => {
-  await QueryData.find({}, (err, docs) => {
-    if (err) {
-      res.send({ status: 500, error: err });
-    } else {
-      res.send({ status: 200, data: docs });
-    }
-  });
+  try {
+    const contact = await QueryData.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 
 ///////////////////////// show user query to admin API //////////////////////
 
 router.get("/showquery", async (req, res) => {
- await QueryData.find((err, docs) => {
-    if (docs) {
-      res.json({ status: 200, data: docs });
-    } else {
-      res.json({ status: 500, error: err });
-    }
-  });
+  try {
+    const contact = await QueryData.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 ///////////////////////////////////////////////////////////  usersList API //////////////////////////////////////////////////
@@ -96,14 +99,15 @@ router.get("/usersList", async (req, res) => {
 ///////////////////////////////////////////////////////////  Report Category API //////////////////////////////////////////////////
 
 router.get("/queryCategory", async (req, res) => {
- await ReportData.find((err, docs) => {
-    if (docs) {
-      res.json({ status: 200, data: docs });
-    } else {
-      console.log("err ========", err);
-      res.json({ status: 500, error: err });
-    }
-  });
+  try {
+    const contact = await ReportData.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 ///////////////////////////////////////////////////////////  Get Feedback Data API //////////////////////////////////////////////////
@@ -123,15 +127,15 @@ router.get("/findfeedback", async (req, res) => {
 /////////////////////////////////////////////////////////  Get queries //////////////////////////////////////////////////
 
 router.get("/findreport", async (req, res) => {
-  await ReportData.find((err, docs) => {
-    if (docs) {
-      res.json({ status: 200, data: docs });
-      // console.log('docs ========', docs)
-    } else {
-      console.log("err ========", err);
-      res.json({ status: 500, error: err });
-    }
-  });
+  try {
+    const contact = await ReportData.find().sort({_id: -1,});;
+    console.log("asdsadas" + contact);
+      await res.status(200).json(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Feedback list:", error);
+    await res.status(400).json({status: 400, error: error});
+  }
 });
 
 
