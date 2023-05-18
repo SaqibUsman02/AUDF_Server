@@ -42,12 +42,11 @@ const router = express.Router();
 
 
 router.get("/usersCount", async (req, res) => {
-  await User.find((err, docs) => {
-    if (docs) {
-       res.json({ status: 200, data: docs });
-
-    } else {
+  await User.find({}, (err, docs) => {
+    if (err) {
       res.json({ status: 500, error: err });
+    } else {
+      res.json({ status: 200, data: docs });
     }
   });
 });
@@ -57,11 +56,11 @@ router.get("/usersCount", async (req, res) => {
 
 
 router.get("/queryCount", async (req, res) => {
- await QueryData.find((err, docs) => {
-    if (docs) {
-      res.json({ status: 200, data: docs });
-    } else {
+  await QueryData.find({}, (err, docs) => {
+    if (err) {
       res.json({ status: 500, error: err });
+    } else {
+      res.json({ status: 200, data: docs });
     }
   });
 });
