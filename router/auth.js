@@ -447,6 +447,8 @@ router.get("/OwnProfile_Pic",  async (req, res) => {
 
   console.log("@!321321" + req.query.Email)
   const userData = await User.findOne({Email: req.query.Email });
+  console.log("----------" + userData);
+
   return res.status(200).json(userData);
 });
 
