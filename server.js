@@ -28,7 +28,7 @@ app.use(passport.session());
 
 app.use(
 	cors({
-    origin: "https://audf.vercel.app",
+    origin: "https://df-kappa.vercel.app",
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 
