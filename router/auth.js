@@ -1359,9 +1359,9 @@ router.post("/login", async (req, res) => {
 router.get("/logout", async (req, res) => {
   try{
     console.log("helloo to logout");
-    await  res.clearCookie("jwToken", { path: "/" });  
-    await res.clearCookie("Name", { path: "/" });
-    await res.clearCookie("Email", { path: "/" });
+    await localStorage.removeItem('jwToken');
+await localStorage.removeItem('Name');
+await  localStorage.removeItem('Email');
     return res.status(200).json({ message: "Logout Succeessfully" });
   }catch(e){
     console.log(e);
