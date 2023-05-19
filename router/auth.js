@@ -1305,6 +1305,10 @@ router.post("/login", async (req, res) => {
       const verify = userExist.verified;
       // console.log(verify);
 
+      if (!userExist.isEnabled) {
+        return res.status(500).send({ message: "You're disabled, coordinate with admin" });
+      }
+
       if (!verify) {
         token = await userExist.generateAuthToken();
         const url = `https://audf.vercel.app/users/${userExist._id}/verify/${token}`;
