@@ -1306,7 +1306,7 @@ router.post("/login", async (req, res) => {
       // console.log(verify);
 
       if (!userExist.isEnabled) {
-        return res.status(500).send({ message: "You're disabled, coordinate with admin" });
+        return res.status(500).send({ message: "You're disabled, coordinate with admin" })  ;
       }
 
       if (!verify) {
@@ -1442,7 +1442,7 @@ router.get(
 	"/google/callback",
 	passport.authenticate("google", {
 		successRedirect: "/login/success",
-		failureRedirect: "http://localhost:3001/signup/",
+		failureRedirect: "https://df-server.vercel.app/signup/",
 	}),
 
   
