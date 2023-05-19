@@ -800,6 +800,10 @@ router.post("/change_pass", async(req,res) => {
 
         return res.status(400).json({ message: "Invalid Credentials" });
       }
+      else if (New_Password != Confirm_Password) {
+
+        return res.status(400).json({ error: "Password are not Matching" });
+      }
       else{
         const filter = { Email: Email};
         this.New_Password = await bcrypt.hash(New_Password,12);
@@ -1416,7 +1420,7 @@ router.get("/login/success", async (req, res) => {
       httpOnly: false,
     });
 
-    await  res.redirect(200, "https://audf.vercel.app/dashboard/");
+    await  res.redirect(200, "https://audf.vercel.app/dashboard");
 		// return res.status(200).json({
 		// 	error: false,
 		// 	message: "Successfully Logged In",
