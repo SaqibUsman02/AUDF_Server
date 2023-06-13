@@ -1254,7 +1254,7 @@ router.get("/users/:id/verify/:token", async (req, res) => {
 
     if (token) {
 
-      const filter = { _id: req.params.id };
+      const filter = { id: req.params.id };
       const update = { verified: true };
   
       const a = await User.findOneAndUpdate(filter, update);
