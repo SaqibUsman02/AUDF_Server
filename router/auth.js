@@ -1233,7 +1233,7 @@ token = await user.generateAuthToken();
 
 // ---------------
 
-router.get("/users/:id/verify/:token", async (req, res) => {
+router.get("https://df-kappa.vercel.app/users/:id/verify/:token", async (req, res) => {
   try {
    
     const user = await User.findOne({ _id: req.params.id });
