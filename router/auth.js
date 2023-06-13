@@ -1307,7 +1307,7 @@ router.post("/login", async (req, res) => {
 
       if (!verify) {
         token = await userExist.generateAuthToken();
-        const url = `https://audf.vercel.app/users/${userExist._id}/verify/${token}`;
+        const url = `https://df-kappa.vercel.app/users/${userExist._id}/verify/${token}`;
         await sendEmail(userExist.Email, "verify Email", url);
         console.log("An Email sent to your account please Verifyyyyyyyyyy");
         return res
