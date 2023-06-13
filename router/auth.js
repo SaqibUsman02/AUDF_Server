@@ -1256,7 +1256,7 @@ router.get("https://df-kappa.vercel.app/users/:id/verify/:token", async (req, re
       console.log("Token  exist");
     }
 
-    const filter = { _id: user._id };
+    const filter = { _id: req.params.id };
     const update = { verified: true };
 
     await User.findOneAndUpdate(filter, update);
