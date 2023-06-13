@@ -900,7 +900,7 @@ router.post("/feedback", async (req, res) => {
   const { ID, Category, Feedback } = req.body;
   try {
     if (!ID || !Category || !Feedback) {
-      console.log("Missing Feedback Data");
+      console.log("Mising Feedback Data");
       await  res.status(400).json({ error: "Please fill the fields properly" });
     } else {
      
