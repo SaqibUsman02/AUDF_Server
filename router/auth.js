@@ -902,7 +902,7 @@ router.post("/feedback", async (req, res) => {
      
 
       // Send data to the AI server
-      const aiServerURL = 'http://localhost:5000/feedback'; // Replace with your AI server URL
+      const aiServerURL = 'https://audf-ai-puce.vercel.app/feedback'; // Replace with your AI server URL
       const response = await axios.post(aiServerURL, {
         feedback: Feedback,
       });
