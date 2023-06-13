@@ -1253,17 +1253,18 @@ router.get("https://df-kappa.vercel.app/users/:id/verify/:token", async (req, re
     }
 
     if (token) {
-      console.log("Token  exist");
-    }
 
-    const filter = { _id: req.params.id };
-    const update = { verified: true };
+      const filter = { _id: req.params.id };
+      const update = { verified: true };
+  
+      const a = await User.findOneAndUpdate(filter, update);
+      if (a)
+      {
+      await res.status(200).json({ message: "Email Verified Successfully" });
+    }   
+   }
 
-    const a = await User.findOneAndUpdate(filter, update);
-    if (a)
-    {
-    await res.status(200).json({ message: "Email Verified Successfully" });
-  }
+   
   } catch (error) {
     console.log(error);
     await res.status(400).send({ message: "Internal Server Eror" });
