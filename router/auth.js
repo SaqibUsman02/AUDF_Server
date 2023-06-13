@@ -1215,7 +1215,7 @@ router.post("/signup", async (req, res) => {
         user = new User({ name, Email, Password, Confirm_Password, Category,Photo });
         await user.save();
 token = await user.generateAuthToken();
-  const url = `${process.env.BASE_URL}users/${user._id}/verify/${token}`;
+  const url = `https://df-kappa.vercel.app/users/${user._id}/verify/${token}`;
         await sendEmail(user.Email, "Verification Mail", url);
 
         // console.log("user reg successfully");
