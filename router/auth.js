@@ -904,12 +904,14 @@ router.post("/feedback", async (req, res) => {
       await  res.status(400).json({ error: "Please fill the fields properly" });
     } else {
      
+      const aiServerURL = `https://audf-ai-puce.vercel.app/feedback?param1=${Feedback}`;
+      const response = await axios.post(aiServerURL);
 
-      // Send data to the AI server
-      const aiServerURL = 'https://audf-ai-puce.vercel.app/feedback'; // Replace with your AI server URL
-      const response = await axios.post(aiServerURL, {
-        feedback: Feedback,
-      });
+      // // Send data to the AI server
+      // const aiServerURL = 'https://audf-ai-puce.vercel.app/feedback'; // Replace with your AI server URL
+      // const response = await axios.post(aiServerURL, {
+      //   feedback: Feedback,
+      // });
 
       if (response.status === 200) {
         const Review = response.data;
