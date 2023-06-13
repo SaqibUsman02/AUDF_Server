@@ -800,10 +800,6 @@ router.post("/change_pass", async(req,res) => {
 
         return res.status(400).json({ message: "Invalid Credentials" });
       }
-      else if (New_Password != Confirm_Password) {
-
-        return res.status(400).json({ error: "Password are not Matching" });
-      }
       else{
         const filter = { Email: Email};
         this.New_Password = await bcrypt.hash(New_Password,12);
@@ -900,18 +896,16 @@ router.post("/feedback", async (req, res) => {
   const { ID, Category, Feedback } = req.body;
   try {
     if (!ID || !Category || !Feedback) {
-      console.log("Mising Feedback Data");
+      console.log("Missing Feedback Data");
       await  res.status(400).json({ error: "Please fill the fields properly" });
     } else {
      
-      const aiServerURL = `https://audf-ai-puce.vercel.app/feedback?param1=${Feedback}`;
-      const response = await axios.post(aiServerURL);
 
-      // // Send data to the AI server
-      // const aiServerURL = 'https://audf-ai-puce.vercel.app/feedback'; // Replace with your AI server URL
-      // const response = await axios.post(aiServerURL, {
-      //   feedback: Feedback,
-      // });
+      // Send data to the AI server
+      const aiServerURL = 'http://localhost:5000/feedback'; // Replace with your AI server URL
+      const response = await axios.post(aiServerURL, {
+        feedback: Feedback,
+      });
 
       if (response.status === 200) {
         const Review = response.data;
@@ -1311,10 +1305,6 @@ router.post("/login", async (req, res) => {
       const verify = userExist.verified;
       // console.log(verify);
 
-      if (!userExist.isEnabled) {
-        return res.status(500).send({ message: "You're disabled, coordinate with admin" })  ;
-      }
-
       if (!verify) {
         token = await userExist.generateAuthToken();
         const url = `https://audf.vercel.app/users/${userExist._id}/verify/${token}`;
@@ -1365,9 +1355,9 @@ router.post("/login", async (req, res) => {
 router.get("/logout", async (req, res) => {
   try{
     console.log("helloo to logout");
-    await localStorage.removeItem('jwToken');
-await localStorage.removeItem('Name');
-await  localStorage.removeItem('Email');
+    await  res.clearCookie("jwToken", { path: "/" });  
+    await res.clearCookie("Name", { path: "/" });
+    await res.clearCookie("Email", { path: "/" });
     return res.status(200).json({ message: "Logout Succeessfully" });
   }catch(e){
     console.log(e);
@@ -1422,7 +1412,7 @@ router.get("/login/success", async (req, res) => {
       httpOnly: false,
     });
 
-    await  res.redirect(200, "https://audf.vercel.app/dashboard");
+    await  res.redirect(200, "https://audf.vercel.app/dashboard/");
 		// return res.status(200).json({
 		// 	error: false,
 		// 	message: "Successfully Logged In",
@@ -1448,7 +1438,7 @@ router.get(
 	"/google/callback",
 	passport.authenticate("google", {
 		successRedirect: "/login/success",
-		failureRedirect: "https://df-server.vercel.app/signup/",
+		failureRedirect: "http://localhost:3001/signup/",
 	}),
 
   
